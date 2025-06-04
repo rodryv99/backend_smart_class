@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 import dj_database_url
+
+
 from pathlib import Path
 import psycopg2.extensions
 
@@ -22,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 # SECRET_KEY = 'django-insecure-tc2zra+p)b=icx6$0zjy)jy4hvkj=n0-8qd^w&n9wd*&t+v)sa'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'valor_inseguro_para_dev')
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -29,6 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'valor_inseguro_para_dev')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost')]
+
 
 # Application definition
 
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     # Aplicaciones de terceros
     'rest_framework',
     'corsheaders',
+
     # Aplicaciones propias
     'users',
     'academic',
@@ -120,11 +125,25 @@ WSGI_APPLICATION = 'smart_class_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
+
     'default': dj_database_url.config(
         default='postgresql://postgres:3021@localhost:5432/smart_class_db2',  # 🔧 Cambia si usas otra base local
         conn_max_age=600
     )
 }
+# 'default': {
+    #    'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': 'smart_class_db2',
+    #    'USER': 'postgres',  # Cambia según tu configuración
+    #    'PASSWORD': 'root',  # Cambia según tu configuración
+    #    'HOST': 'localhost',
+    #   'PORT': '5432',
+    #    'OPTIONS': {
+    #        'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+    #    },
+    #    'CONN_MAX_AGE': 0,  # Deshabilitar pooling de conexiones para desarrollo
+    #}
+#}
 
 
 # Password validation
@@ -436,6 +455,8 @@ MONITORING = {
 if not DEBUG:
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 
 # ===== NOTAS PARA PRODUCCIÓN =====
 
