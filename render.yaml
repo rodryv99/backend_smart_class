@@ -4,8 +4,9 @@ services:
     env: python
     buildCommand: |
       pip install -r requirements.txt
+      sleep 10
       python manage.py migrate
-      echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin') if not User.objects.filter(username='admin').exists() else print('Usuario admin ya existe')" | python manage.py shell
+      python manage.py create_initial_data
     startCommand: gunicorn smart_class_backend.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
