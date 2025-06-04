@@ -2,14 +2,17 @@ services:
   - type: web
     name: smart-class-backend
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn smart_class_backend.wsgi:application"
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin') if not User.objects.filter(username='admin').exists() else print('Usuario admin ya existe')" | python manage.py shell
+    startCommand: gunicorn smart_class_backend.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: smart_class_backend.settings
       - key: SECRET_KEY
-        value: n37TFNQ9ahapkvO2ORfmeGi80An4mkP-BAsO6eTuRmyK_ZwrNbudWmUef8zbL7uwSSQ # 🔧 cambia esto por una clave segura
+        value: n37TFNQ9ahapkvO2ORfmeGi80An4mkP-BAsO6eTuRmyK_ZwrNbudWmUef8zbL7uwSSQ
       - key: DEBUG
         value: False
       - key: DATABASE_URL
-        value: postgresql://smart_class_db2_user:dbpfMbOzf2CtGde9GEU5pmxpPpIaOeqR@dpg-d106jm63jp1c739lvogg-a/smart_class_db2 # 🔧 Render te da esta URL al crear la DB
+        value: postgresql://smart_class_db2_user:dbpfMbOzf2CtGde9GEU5pmxpPpIaOeqR@dpg-d106jm63jp1c739lvogg-a/smart_class_db2
